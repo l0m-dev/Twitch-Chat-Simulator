@@ -15,69 +15,71 @@ class Chatter {
 		this.name = name || this.generateName();
 		this.colour = colour || this.generateColour();
 
-		this.memeMessages = new Array(
-									["MaN", "NaM"],
-									["Kapp", "Kappa", "Kapp sure"],
-									["VaN IT'S SO FUCKING DEEP", "VaN", "VaN FUCK YOU"],
-									["gachiHYPER SO AM I", "gachiHYPER", "gachiBASS", "gachiGASM", "gachiHYPER YES SIR", "gachiHYPER OK"],
-									["Pepega Clap", "Pepega", "FARMING PEPEGAS WeirdChamp", "Pepega", "NOT PRETENDING PepeHands"],
-									["monkaW", "CHAT DONT LOOK BEHIND YOU monkaW", "MEGALUL DETH"],
-									["PeepoGlad TeaTime Cock", "PeepoGlad Cock", "Sadge YEP"],
-									["WideHard Clap", "WideHard", "TriHard"],
-									["LULW TRUE", "LULW", "LULW NOT FALSE"],
-									["cmonBruh", "cmonBruh chu say?"]
-									);
+		this.memeMessages = [
+								["MaN", "NaM"],
+								["Kapp", "Kappa", "Kapp sure"],
+								["VaN IT'S SO FUCKING DEEP", "VaN", "VaN FUCK YOU"],
+								["gachiHYPER SO AM I", "gachiHYPER", "gachiBASS", "gachiGASM", "gachiHYPER YES SIR", "gachiHYPER OK"],
+								["Pepega Clap", "Pepega", "FARMING PEPEGAS WeirdChamp", "Pepega", "NOT PRETENDING PepeHands"],
+								["monkaW", "CHAT DONT LOOK BEHIND YOU monkaW", "MEGALUL DETH"],
+								["PeepoGlad TeaTime Cock", "PeepoGlad Cock", "Sadge YEP"],
+								["WideHard Clap", "WideHard", "TriHard"],
+								["LULW TRUE", "LULW", "LULW NOT FALSE"],
+								["cmonBruh", "cmonBruh chu say?"]
+							];
 									
 		this.spamMessages = spam;//new Array("SPAM", "YEP", "DonoWall", "Any joyers?", "4Shrug");
 	}
 	
 	generateName() {
 		// adjective list
-		let adjectives = new Array(	"Cool",
-									"Huge",
-									"Funny",
-									"Japanese",
-									"Amazing",
-									"Tiny",
-									"Stupid",
-									"Cowabunga",
-									"Wide",
-									"Incredible",
-									"Corn",
-									"Hame",
-									"Beluga",
-									"Red",
-									"Orange",
-									"Yellow",
-									"Green",
-									"Blue",
-									"Purple",
-									"Brown",
-									"Grey",
-									"Bong"
-									);
+		let adjectives = [
+							"Cool",
+							"Huge",
+							"Funny",
+							"Japanese",
+							"Amazing",
+							"Tiny",
+							"Stupid",
+							"Cowabunga",
+							"Wide",
+							"Incredible",
+							"Corn",
+							"Hame",
+							"Beluga",
+							"Red",
+							"Orange",
+							"Yellow",
+							"Green",
+							"Blue",
+							"Purple",
+							"Brown",
+							"Grey",
+							"Bong"
+						];
 
 		// noun list
-		let nouns = new Array(	"Dude",
-								"Man",
-								"Boy",
-								"Barf",
-								"Girl",
-								"MasterChief",
-								"Yoshi",
-								"Samurai",
-								"Beast",
-								"Fish",
-								"Surfer",
-								"Banker",
-								"Gamer",
-								"Carm",
-								"Porkboy",
-								"Gamer",
-								"Fragger",
-								"Hole",
-								"Star"
-								);
+		let nouns = [
+						"Dude",
+						"Man",
+						"Boy",
+						"Barf",
+						"Girl",
+						"MasterChief",
+						"Yoshi",
+						"Samurai",
+						"Beast",
+						"Fish",
+						"Surfer",
+						"Banker",
+						"Gamer",
+						"Carm",
+						"Porkboy",
+						"Gamer",
+						"Fragger",
+						"Hole",
+						"Star"
+					];
 
 		let adjective = adjectives[Math.floor(Math.random()*adjectives.length)];
 		let noun = nouns[Math.floor(Math.random()*nouns.length)];
@@ -107,7 +109,7 @@ class Chatter {
 	
 	generateColour() {
 		// let colours = new Array("Red", "Blue", "Green", "Yellow", "Orange", "Brown", "Black", "White", "Fuchsia");
-		let colours = new Array("FF0000", "0000FF", "008000", "B22222", "FF7F50", "FF4500", "2E8B57", "DAA520", "D2691E", "5F9EA0", "1E90FF", "FF69B4", "8A2BE2", "00FF7F");
+		let colours = ["FF0000", "0000FF", "008000", "B22222", "FF7F50", "FF4500", "2E8B57", "DAA520", "D2691E", "5F9EA0", "1E90FF", "FF69B4", "8A2BE2", "00FF7F"];
 
 		let colourIndex = Math.floor(Math.random()*colours.length);
 
@@ -166,7 +168,7 @@ class Chatter {
 		chatMessage = replaceEmotes(chatMessage);
 		
 		let $chat = $('#chat');
-		let shouldScroll = $chat[0].scrollHeight - $chat.height() <= $chat.scrollTop() + 25; 
+		let shouldScroll = $chat[0].scrollHeight - $chat.height() <= $chat.scrollTop() + 60; 
 
 		// append the message as a paragraph, including username and name colour
 		let stringToAppend = "<p class=\"chatMessage\"><span style=\"font-weight:bold; color:" + this.colour + ";\">" + this.name + "</span>: " + chatMessage + "</p>";
@@ -191,12 +193,27 @@ class Chatter {
 }
 
 // main logic
-let chatters = new Array();
+let chatters = [];
 let mainMemeIndex;
 let mainMemeDuration;
-let mainMemeDurationStartValue = 150;
+let mainMemeDurationStartValue = 100;
 
 function start() {
+	const queryString = window.location.search;
+	const urlParams = new URLSearchParams(queryString);
+
+	const streamer = urlParams.get('streamer') || 'xqcow';
+	
+	const iframe = document.createElement('iframe');
+	iframe.setAttribute("id", "frame");
+	
+	iframe.src = `https://player.twitch.tv/?channel=${streamer}&html5&parent=localhost&muted=false`;       
+	iframe.frameBorder = "0";
+	iframe.scrolling = "0";
+	iframe.allowFullscreen = "true";
+	
+	$("#blankFrame").replaceWith(iframe);
+	
 	for(i = 0; i < 30; i++) {
 		chatters.push(new Chatter());
 	}
@@ -216,9 +233,9 @@ function attemptToChat() {
 }
 
 function ajaxit() {
-    var iFrameWindow = document.getElementById("myframe").contentWindow;
-    iFrameWindow.document.body.appendChild( document.getElementById("form").cloneNode(true));   
-    var frameForm = iFrameWindow.document.getElementById("form");
+    let iFrameWindow = document.getElementById("myframe").contentWindow;
+    iFrameWindow.document.body.appendChild(document.getElementById("form").cloneNode(true));   
+    let frameForm = iFrameWindow.document.getElementById("form");
     frameForm.onsubmit = null;
     frameForm.submit();
     return false;
@@ -226,13 +243,13 @@ function ajaxit() {
 
 $("#textfield")[0].name = new Date();
 
-setInterval(function() { randomizeChatSpeed(); }, 5000);
+setInterval(() => { randomizeChatSpeed(); }, 5000);
 
-let fireChatMessage = setInterval(function() { attemptToChat(); }, 100);
+let fireChatMessage = setInterval(() => { attemptToChat(); }, 100);
 
 function randomizeChatSpeed() {
 	clearInterval(fireChatMessage);
-	fireChatMessage = setInterval(function() {attemptToChat();}, Math.floor(Math.random()*50)+50);
+	fireChatMessage = setInterval(() => {attemptToChat();}, Math.floor(Math.random()*50)+50);
 }
 
 function myStopFunction() {
@@ -423,4 +440,10 @@ function randomInteger(n) {
 	else if (x > 5)
 		return 2;
 	else return Math.min(n, 2 + Math.ceil(Math.random() * (n - 2)));
+}
+
+window.onerror = (msg, url, line) => {
+    if (msg == "[IFRAME ERROR MESSAGE]") {
+        return true
+    }
 }

@@ -1,5 +1,6 @@
 body{
 	margin:0px;
+	display: flex;
 }
 
 html, body, input, textarea, select, button {
@@ -8,10 +9,19 @@ html, body, input, textarea, select, button {
     color: #e8e6e3;
 }
 
-#canvas{
-	width: calc(100% - 340px);
-	height: 100%;
-	position: absolute;
+#canvas {
+	flex: 1;
+	display: table;
+	position: relative;
+	margin: auto;
+}
+
+#frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 #mainWrapper{
@@ -21,10 +31,11 @@ html, body, input, textarea, select, button {
 	background-color:#212325;
 	font-family: arial, sans-serif;
 	font-size:12px;
-	position:relative;
+	flex: 0 0 340px;
 	padding-top:0px;
 	overflow:hidden;
 	margin:0px;
+	position: relative;
 }
 #chatWrapper{
 	width:100%;
@@ -62,7 +73,7 @@ html, body, input, textarea, select, button {
 	text-align: center;
 	font-size: 14px;
 	width: 100%;
-	background-color:#171717;
+	background-color:#212325;
 	z-index:999;
 }
 #chatHeader p{
@@ -90,13 +101,14 @@ svg.headerIcon{
 	position:absolute;
 }
 #chat p{
-	line-height:21px;
+	line-height:24px;
 }
 #chat p img{
 	display: inline-block;
 	vertical-align: middle;
 	margin:-5px 0px;
-	max-height: 29px;
+	margin-bottom: 1px;
+	max-height: 28px;
 }
 a{
 	color:#6441a5;
