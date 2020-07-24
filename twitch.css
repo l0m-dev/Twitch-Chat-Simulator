@@ -1,0 +1,148 @@
+body{
+	margin:0px;
+}
+
+html, body, input, textarea, select, button {
+    background-color: #131516;
+	border-color: #736b5e;
+    color: #e8e6e3;
+}
+
+#canvas{
+	width: calc(100% - 340px);
+	height: 100%;
+	position: absolute;
+}
+
+#mainWrapper{
+	float:right;
+	width:340px;
+	height:100vh;
+	background-color:#212325;
+	font-family: arial, sans-serif;
+	font-size:12px;
+	position:relative;
+	padding-top:0px;
+	overflow:hidden;
+	margin:0px;
+}
+#chatWrapper{
+	width:100%;
+	height:calc(100% - 90px);
+	background-color:#212325;
+	font-family: arial, sans-serif;
+	font-size:12px;
+	position:relative;
+	padding-top:0px;
+	overflow:hidden;
+	margin:0px auto;
+}
+#chatHeader{
+	margin:0;
+	box-sizing: border-box;
+	position: relative;
+	height: 50px;
+	padding: 10px 0;
+	line-height: 30px;
+	text-align: center;
+	font-size: 14px;
+	width: 100%;
+	box-shadow: inset 0 -1px 0 0 #2c3032;
+	background-color:#212325;
+	z-index:999;
+}
+#chatInput{
+	bottom:0;
+	margin:0;
+	box-sizing: border-box;
+	position: absolute;
+	height: 90px;
+	padding: 10px 0;
+	line-height: 30px;
+	text-align: center;
+	font-size: 14px;
+	width: 100%;
+	background-color:#171717;
+	z-index:999;
+}
+#chatHeader p{
+	margin:0;
+	box-sizing: border-box;
+	line-height: 20px;
+	font-size: 12px;
+	margin-bottom: -6px;
+	padding-top: 6px;
+	font-family:"Helvetica Neue","Helvetica",sans-serif
+}
+svg.headerIcon{
+	fill:rgb(100,65,164);
+	position:absolute;
+	left:20px;
+	top:17.5px;
+	line-height:30px;
+}
+#chat{
+	width:330px;
+	height:calc(100% - 50px);
+	padding:10px;
+	background-color:#212325;
+	overflow-y:auto;
+	position:absolute;
+}
+#chat p{
+	line-height:21px;
+}
+#chat p img{
+	display: inline-block;
+	vertical-align: middle;
+	margin:-5px 0px;
+	max-height: 29px;
+}
+a{
+	color:#6441a5;
+	text-decoration:none;
+}
+a:hover{
+	text-decoration:underline;
+}
+
+#textfield
+{
+    position: absolute;
+    height: 50%;
+    width: 89%;
+    left: 2.5%;
+    border: solid;
+    border-width: 1px;
+    border-color: gray;
+	padding: 0px 10px;
+}
+
+#chatButton
+{
+    position: absolute;
+    height: 30%;
+    width: 15%;
+    right: 2.5%;
+    top: 67.5%;
+    background-color: #6441a4;
+    color: white;
+    border: none;
+}
+
+/* Change Autocomplete styles in Chrome*/
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus {
+	-webkit-text-fill-color: white;
+	transition: background-color 5000s ease-in-out 0s;
+}
+
+::-webkit-scrollbar {
+    background-color: #202324;
+    color: #aba499;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #454a4d;
+}

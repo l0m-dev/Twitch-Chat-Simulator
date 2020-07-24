@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Welcome to Twitch Chat Simulator</title>
+		<meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+
+		<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+		<link rel="stylesheet" type="text/css" href="twitch.css">
+	</head>
+	<body>
+		<div id="canvas">
+		</div>
+		<div id="mainWrapper">
+			<div id="chatWrapper">
+				<div id="chatHeader">
+					<svg class="headerIcon" height="16px" version="1.1" viewBox="0 0 16 16" width="16px" x="0px" y="0px">
+						<path clip-rule="evenodd" d="M1,13v-2h14v2H1z M1,5h13v2H1V5z M1,2h10v2H1V2z M12,10H1V8h11V10z" fill-rule="evenodd"></path>
+					</svg>
+					<p>twitchchat.com</p>
+				</div>
+				<div id="chat">
+					<p id="welcome">Welcome to Twitch Chat Simulator!</p>
+				</div>
+			</div>
+			<div id="chatInput">
+				<form id="form" onsubmit="return ajaxit();" autocomplete="on">
+					<input type="text" id="textfield" placeholder=" Send a message" name="<?php echo time(); ?>">
+					<input type="submit" id="chatButton" onClick="chat()" value="Chat">
+				</form>
+				<iframe id="myframe" src="" style="visibility:hidden"></iframe> <!-- you'll want this hidden -->
+			</div>
+		</div>
+		<audio id="audio" controls="" style="display:none">
+			<source id="source" type="audio/wav" />
+		</audio>
+		<script src="sim.js"></script>
+</html>
