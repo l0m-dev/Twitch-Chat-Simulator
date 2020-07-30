@@ -103,7 +103,7 @@ svg.headerIcon{
 #chat p{
 	line-height:24px;
 }
-#chat p img{
+p img{
 	display: inline-block;
 	vertical-align: middle;
 	margin:-5px 0px;

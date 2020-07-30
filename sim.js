@@ -1,7 +1,13 @@
 let emotes = [];
 let spam = [];
+let combo = {
+	emote: null,
+	count: 0,
+	elt: null,
+	combo: null
+};
 
-(async () => {
+(async function() {
 	await loadEmotes();
 	await fetchWords();
 	
@@ -121,7 +127,7 @@ class Chatter {
 		// currently 33% chance
 		let mainMemeDecider = Math.floor(Math.random()*2);
 
-		let chatMessage;
+		let chatMessage, words;
 
 		// we're copying the main meme!
 		if(mainMemeDecider == 0 && mainMemeIndex != undefined && mainMemeDuration >= 0) {
@@ -131,6 +137,7 @@ class Chatter {
 			chatMessage = (chatMessage + ' ').repeat(randomInteger(8) + 1);
 
 			mainMemeDuration--;
+			words = chatMessage.split(' ');
 		} else {
 			// randomly grab a message from message array
 			let messageDecider = Math.floor(Math.random()*this.spamMessages.length);
@@ -141,7 +148,7 @@ class Chatter {
 			//	chatMessage = this.spamMessages[messageDecider];
 			//}
 			
-			let words = chatMessage.split(' ');
+			words = chatMessage.split(' ');
 			
 			if (words[0] == "showemote") {
 				const emote = emotes.find(e => e.text === words[1]);
@@ -164,6 +171,16 @@ class Chatter {
 		
 		if (chatMessage.trim() == "")
 			return;
+		
+		if (combo.emote == words[0]) {
+			combo.count++;
+			
+			if (combo.count > 2)
+				showCombo(words[0]);
+		}	else {
+			combo.emote = words[0];
+			combo.count = 1;
+		}
 		
 		chatMessage = replaceEmotes(chatMessage);
 		
@@ -424,6 +441,51 @@ function showEmote(url) {
 	
 	setTimeout(() => {
 		$(emote).fadeOut(1000, () => $(emote).remove());
+	}, 5000)
+}
+
+function showCombo(word) {
+	const emote = emotes.find(e => e.text === word);
+	if (!emote)
+		return;
+	
+	let canvas = document.getElementById("canvas");
+	let div = null;
+	
+	if (combo.elt) {
+		div = combo.elt;
+		//$('#comboDiv').fadeIn(1000);
+		//clearInterval(combo.interval);
+		
+		//update combo and pulse
+		return;
+	} else {
+		div = document.createElement("div");
+		div.setAttribute("id", "comboDiv");
+		
+		combo.elt = div;
+		
+		$('#comboDiv').hide();
+		$('#comboDiv').fadeIn(1000);
+
+		canvas.appendChild(div);
+		
+		let left = 128;
+		let top = $("#canvas").height() - 128;
+		
+		let divStyle = div.style;
+		divStyle.position = "absolute";
+		divStyle.maxHeight = "56px";
+		divStyle.top = top + 'px';
+		divStyle.left = left + 'px';
+		
+		let $comboDiv = $('#comboDiv');
+		let stringToAppend = `<p class='chatMessage'>COMBO x${combo.count} <img src='${emote.url}'></img></p>`;
+		$comboDiv.append(stringToAppend);
+	}
+	
+	combo.interval = setTimeout(() => {
+		$('#comboDiv').fadeOut(1000, () => {$('#comboDiv').remove(); combo.elt = null});
 	}, 5000)
 }
 
