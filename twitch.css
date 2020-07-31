@@ -103,7 +103,7 @@ svg.headerIcon{
 #chat p{
 	line-height:24px;
 }
-p img{
+.emote {
 	display: inline-block;
 	vertical-align: middle;
 	margin:-5px 0px;
@@ -140,6 +140,24 @@ a:hover{
     background-color: #6441a4;
     color: white;
     border: none;
+}
+
+#comboDiv {
+	position: absolute;
+    left: 0;
+	bottom: 0;
+	height: 48px;
+	margin-left: 10px;
+}
+
+#combo {
+	color: white;
+	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+	-webkit-font-smoothing: antialiased;
+}
+
+#combo .emote {
+	margin-left: 5px;
 }
 
 /* Change Autocomplete styles in Chrome*/

@@ -1,11 +1,15 @@
 let emotes = [];
 let spam = [];
+
 let combo = {
 	emote: null,
+	oldEmote: null,
 	count: 0,
 	elt: null,
-	combo: null
+	timeout: null
 };
+
+let donations = [];
 
 (async function() {
 	await loadEmotes();
@@ -185,7 +189,7 @@ class Chatter {
 		chatMessage = replaceEmotes(chatMessage);
 		
 		let $chat = $('#chat');
-		let shouldScroll = $chat[0].scrollHeight - $chat.height() <= $chat.scrollTop() + 60; 
+		let shouldScroll = $chat[0].scrollHeight <= $chat[0].scrollTop + $chat[0].clientHeight; 
 
 		// append the message as a paragraph, including username and name colour
 		let stringToAppend = "<p class=\"chatMessage\"><span style=\"font-weight:bold; color:" + this.colour + ";\">" + this.name + "</span>: " + chatMessage + "</p>";
@@ -196,7 +200,7 @@ class Chatter {
 		}
 		
 		if (shouldScroll) {
-			$chat.animate({scrollTop:$chat[0].scrollHeight}, 100);
+			$chat.animate({scrollTop:$chat[0].scrollHeight}, 50);
 		}
 	}
 	
@@ -392,7 +396,7 @@ function chat() {
 			let $chat = $('#chat');
 			
 			$chat.append(stringToAppend);
-			$chat.animate({scrollTop:$chat[0].scrollHeight}, 100);
+			$chat.animate({scrollTop:$chat[0].scrollHeight}, 50);
 		}
 		setTimeout(() => {
 			// slight delay to allow autofill to save the message
@@ -401,24 +405,43 @@ function chat() {
     }
 }
 
-async function donate(text) {
-	let speak = await fetch("https://api.streamelements.com/kappa/v3/speech?voice=Brian&text=" + encodeURIComponent(text.trim()));
-
-	if (speak.status != 200) {
-		alert(await speak.text());
-		return;
+function donate(voicetext) {
+	let httpreq = new XMLHttpRequest();
+	voicetext = encodeURIComponent(replaceAll(voicetext, "&"," and "));
+	let params = "msg="+voicetext+"&lang=Brian&source=ttsmp3";
+	httpreq.open("POST", 'https://cors-anywhere.herokuapp.com/https://ttsmp3.com/makemp3_new.php', true);
+	httpreq.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	httpreq.overrideMimeType("application/json");
+	httpreq.onreadystatechange = function (e) {
+		if (this.readyState == 4 && this.status == 200) {
+			let soundarray = JSON.parse(this.responseText);
+			if (soundarray["Error"] == 0) {
+				let myaudio = new Audio(soundarray["URL"]);
+				myaudio.addEventListener('canplaythrough', function () {
+					this.loop = false;
+					if (donations.length == 0) {
+						setTimeout(() => {
+							this.play();
+						}, 3000 + (Math.random() * 3000));
+					}
+					donations.push(this);
+				});
+				myaudio.addEventListener("ended", () => {
+					setTimeout(() => {
+						donations.shift();
+						if (donations.length > 0)
+							donations[0].play();
+					}, 3000 + (Math.random() * 3000));
+				});
+			}
+			else {
+				alert(soundarray['Error']);
+			}
+		}
 	}
-
-	let mp3 = await speak.blob();
-
-	let blobUrl = URL.createObjectURL(mp3);
-	document.getElementById("source").setAttribute("src", blobUrl);
-	let audio = document.getElementById("audio");
-	audio.pause();
-	audio.load();
-	audio.play();
+	httpreq.send(params);
 }
-
+		
 function showEmote(url) {
 	let canvas = document.getElementById("canvas");
 	
@@ -452,41 +475,51 @@ function showCombo(word) {
 	let canvas = document.getElementById("canvas");
 	let div = null;
 	
+	if (word != combo.oldEmote) {
+		$('#comboDiv').remove();
+		combo.elt = null;
+	}	
+	
 	if (combo.elt) {
 		div = combo.elt;
-		//$('#comboDiv').fadeIn(1000);
-		//clearInterval(combo.interval);
 		
 		//update combo and pulse
-		return;
+		if (parseInt($("#combo span").text()) < combo.count) {
+			clearTimeout(combo.timeout);
+			combo.timeout = null;
+			
+			$('#comboDiv').animate({
+				'font-size': '18px',
+			}, 80, () => {
+				$('#comboDiv').animate({
+					'font-size': '16px',
+				}, 80);
+			});
+		}
+		
+		$("#combo span").text(combo.count);
 	} else {
+		combo.oldEmote = emote.text;
+		
 		div = document.createElement("div");
 		div.setAttribute("id", "comboDiv");
 		
 		combo.elt = div;
-		
-		$('#comboDiv').hide();
-		$('#comboDiv').fadeIn(1000);
 
 		canvas.appendChild(div);
 		
-		let left = 128;
-		let top = $("#canvas").height() - 128;
+		$('#comboDiv').hide();
+		$('#comboDiv').fadeIn(1000);
 		
-		let divStyle = div.style;
-		divStyle.position = "absolute";
-		divStyle.maxHeight = "56px";
-		divStyle.top = top + 'px';
-		divStyle.left = left + 'px';
-		
-		let $comboDiv = $('#comboDiv');
-		let stringToAppend = `<p class='chatMessage'>COMBO x${combo.count} <img src='${emote.url}'></img></p>`;
-		$comboDiv.append(stringToAppend);
+		let stringToAppend = `<p id='combo' class='chatMessage'>COMBO x<span>${combo.count}</span><img src='${emote.url}' class='emote'></img></p>`;
+		$('#comboDiv').append(stringToAppend);
 	}
 	
-	combo.interval = setTimeout(() => {
-		$('#comboDiv').fadeOut(1000, () => {$('#comboDiv').remove(); combo.elt = null});
-	}, 5000)
+	if (!combo.timeout) {
+		combo.timeout = setTimeout(() => {
+			$('#comboDiv').fadeOut(1000, () => {$('#comboDiv').remove(); combo.elt = null});
+		}, 5000)
+	}
 }
 
 function randomInteger(n) {
@@ -502,6 +535,14 @@ function randomInteger(n) {
 	else if (x > 5)
 		return 2;
 	else return Math.min(n, 2 + Math.ceil(Math.random() * (n - 2)));
+}
+
+function escapeRegExp(str) {
+	return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+}
+
+function replaceAll(str, find, replace) {
+	return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
 }
 
 window.onerror = (msg, url, line) => {
