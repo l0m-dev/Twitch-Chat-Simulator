@@ -1,7 +1,7 @@
 let emotes = [];
-let spam = [];
+let spamMessages = [];
 
-let combo = {
+const combo = {
 	emote: null,
 	oldEmote: null,
 	count: 0,
@@ -9,7 +9,7 @@ let combo = {
 	timeout: null
 };
 
-let donations = [];
+const donations = [];
 
 (async function() {
 	await loadEmotes();
@@ -19,80 +19,79 @@ let donations = [];
 })();
 
 
+const adjectives = [
+	"Cool",
+	"Huge",
+	"Funny",
+	"Japanese",
+	"Amazing",
+	"Tiny",
+	"Stupid",
+	"Cowabunga",
+	"Wide",
+	"Incredible",
+	"Corn",
+	"Hame",
+	"Beluga",
+	"Red",
+	"Orange",
+	"Yellow",
+	"Green",
+	"Blue",
+	"Purple",
+	"Brown",
+	"Grey",
+	"Bong"
+];
+
+const nouns = [
+	"Dude",
+	"Man",
+	"Boy",
+	"Barf",
+	"Girl",
+	"MasterChief",
+	"Yoshi",
+	"Samurai",
+	"Beast",
+	"Fish",
+	"Surfer",
+	"Banker",
+	"Gamer",
+	"Carm",
+	"Porkboy",
+	"Gamer",
+	"Fragger",
+	"Hole",
+	"Star"
+];
+
+//let colours = new Array("Red", "Blue", "Green", "Yellow", "Orange", "Brown", "Black", "White", "Fuchsia");
+let colours = ["FF0000", "0000FF", "008000", "B22222", "FF7F50", "FF4500", "2E8B57", "DAA520", "D2691E", "5F9EA0", "1E90FF", "FF69B4", "8A2BE2", "00FF7F"];
+
+const memeMessages = [
+	["MaN", "NaM"],
+	["Kapp", "Kappa", "Kapp sure"],
+	["VaN IT'S SO FUCKING DEEP", "VaN", "VaN FUCK YOU"],
+	["gachiHYPER SO AM I", "gachiHYPER", "gachiBASS", "gachiGASM", "gachiHYPER YES SIR", "gachiHYPER OK"],
+	["Pepega Clap", "Pepega", "FARMING PEPEGAS WeirdChamp", "Pepega", "NOT PRETENDING PepeHands"],
+	["monkaW", "CHAT DONT LOOK BEHIND YOU monkaW", "MEGALUL DETH"],
+	["PeepoGlad TeaTime Cock", "PeepoGlad Cock", "Sadge YEP"],
+	["WideHard Clap", "WideHard", "TriHard"],
+	["LULW TRUE", "LULW", "LULW NOT FALSE"],
+	["cmonBruh", "cmonBruh chu say?"]
+];
+
 class Chatter {
 	constructor(name, colour) {
 		// name not given? generate a cool one
 		this.name = name || this.generateName();
 		this.colour = colour || this.generateColour();
-
-		this.memeMessages = [
-								["MaN", "NaM"],
-								["Kapp", "Kappa", "Kapp sure"],
-								["VaN IT'S SO FUCKING DEEP", "VaN", "VaN FUCK YOU"],
-								["gachiHYPER SO AM I", "gachiHYPER", "gachiBASS", "gachiGASM", "gachiHYPER YES SIR", "gachiHYPER OK"],
-								["Pepega Clap", "Pepega", "FARMING PEPEGAS WeirdChamp", "Pepega", "NOT PRETENDING PepeHands"],
-								["monkaW", "CHAT DONT LOOK BEHIND YOU monkaW", "MEGALUL DETH"],
-								["PeepoGlad TeaTime Cock", "PeepoGlad Cock", "Sadge YEP"],
-								["WideHard Clap", "WideHard", "TriHard"],
-								["LULW TRUE", "LULW", "LULW NOT FALSE"],
-								["cmonBruh", "cmonBruh chu say?"]
-							];
-									
-		this.spamMessages = spam;//new Array("SPAM", "YEP", "DonoWall", "Any joyers?", "4Shrug");
 	}
 	
 	generateName() {
-		// adjective list
-		let adjectives = [
-							"Cool",
-							"Huge",
-							"Funny",
-							"Japanese",
-							"Amazing",
-							"Tiny",
-							"Stupid",
-							"Cowabunga",
-							"Wide",
-							"Incredible",
-							"Corn",
-							"Hame",
-							"Beluga",
-							"Red",
-							"Orange",
-							"Yellow",
-							"Green",
-							"Blue",
-							"Purple",
-							"Brown",
-							"Grey",
-							"Bong"
-						];
-
-		// noun list
-		let nouns = [
-						"Dude",
-						"Man",
-						"Boy",
-						"Barf",
-						"Girl",
-						"MasterChief",
-						"Yoshi",
-						"Samurai",
-						"Beast",
-						"Fish",
-						"Surfer",
-						"Banker",
-						"Gamer",
-						"Carm",
-						"Porkboy",
-						"Gamer",
-						"Fragger",
-						"Hole",
-						"Star"
-					];
-
-		let adjective = adjectives[Math.floor(Math.random()*adjectives.length)];
-		let noun = nouns[Math.floor(Math.random()*nouns.length)];
+		const adjective = adjectives[Math.floor(Math.random()*adjectives.length)];
+		const noun = nouns[Math.floor(Math.random()*nouns.length)];
 
 		let number;
 
@@ -100,7 +99,7 @@ class Chatter {
 		// force 10% of users to have 420 in their name
 		// force 20% of users to have no number in their name
 
-		let numberDecider = Math.floor(Math.random()*9);
+		const numberDecider = Math.floor(Math.random()*9);
 
 		if(numberDecider == 0 || numberDecider == 1) {
 			number = "";
@@ -112,16 +111,13 @@ class Chatter {
 			number = Math.floor(Math.random()*1000);
 		}
 
-		let username = adjective + noun.toLowerCase() + number;
+		const username = adjective + noun.toLowerCase() + number;
 
 		return username;
 	};
 	
 	generateColour() {
-		// let colours = new Array("Red", "Blue", "Green", "Yellow", "Orange", "Brown", "Black", "White", "Fuchsia");
-		let colours = ["FF0000", "0000FF", "008000", "B22222", "FF7F50", "FF4500", "2E8B57", "DAA520", "D2691E", "5F9EA0", "1E90FF", "FF69B4", "8A2BE2", "00FF7F"];
-
-		let colourIndex = Math.floor(Math.random()*colours.length);
+		const colourIndex = Math.floor(Math.random()*colours.length);
 
 		return "#" + colours[colourIndex];
 	};
@@ -129,14 +125,14 @@ class Chatter {
 	speak () {
 		// check if we're gonna do the main meme or not
 		// currently 33% chance
-		let mainMemeDecider = Math.floor(Math.random()*2);
+		const mainMemeDecider = Math.floor(Math.random()*2);
 
 		let chatMessage, words;
 
 		// we're copying the main meme!
 		if(mainMemeDecider == 0 && mainMemeIndex != undefined && mainMemeDuration >= 0) {
-			let m = this.memeMessages[mainMemeIndex];
-			let i = randomInteger(m.length - 1);
+			const m = memeMessages[mainMemeIndex];
+			const i = randomInteger(m.length - 1);
 			chatMessage = m[i];
 			chatMessage = (chatMessage + ' ').repeat(randomInteger(8) + 1);
 
@@ -144,12 +140,12 @@ class Chatter {
 			words = chatMessage.split(' ');
 		} else {
 			// randomly grab a message from message array
-			let messageDecider = Math.floor(Math.random()*this.spamMessages.length);
-			chatMessage = this.spamMessages[messageDecider];
+			const messageDecider = Math.floor(Math.random()*spamMessages.length);
+			chatMessage = spamMessages[messageDecider];
 			
 			//while (chatMessage.split(' ')[0] != 'showemote') {
-			//	let messageDecider = Math.floor(Math.random()*this.spamMessages.length);
-			//	chatMessage = this.spamMessages[messageDecider];
+			//	let messageDecider = Math.floor(Math.random()*spamMessages.length);
+			//	chatMessage = spamMessages[messageDecider];
 			//}
 			
 			words = chatMessage.split(' ');
@@ -162,14 +158,14 @@ class Chatter {
 				chatMessage = '!#' + chatMessage;
 			}
 			
-			let mainMemeOverwriteDecider = Math.floor(Math.random()*50);
+			const mainMemeOverwriteDecider = Math.floor(Math.random()*50);
 
 			// let's start a new main meme!
 			if(mainMemeOverwriteDecider == 0) {
-				let memeMessageDecider = Math.floor(Math.random()*this.memeMessages.length);
+				let memeMessageDecider = Math.floor(Math.random()*memeMessages.length);
 				mainMemeIndex = memeMessageDecider;
 				mainMemeDuration = mainMemeDurationStartValue;
-				// console.log("overwriting main meme! to: " + this.messages[messageDecider]);
+				// console.log("overwriting main meme! to: " + memeMessages[messageDecider]);
 			}
 		}
 		
@@ -188,24 +184,26 @@ class Chatter {
 		
 		chatMessage = replaceEmotes(chatMessage);
 		
-		let $chat = $('#chat');
-		let shouldScroll = $chat[0].scrollHeight <= $chat[0].scrollTop + $chat[0].clientHeight; 
+		const chatDiv = document.getElementById("chat");
+		const shouldScroll = chatDiv.scrollHeight <= chatDiv.scrollTop + chatDiv.clientHeight; 
 
 		// append the message as a paragraph, including username and name colour
-		let stringToAppend = "<p class=\"chatMessage\"><span style=\"font-weight:bold; color:" + this.colour + ";\">" + this.name + "</span>: " + chatMessage + "</p>";
-		$chat.append(stringToAppend);
+		const stringToAppend = "<p class=\"chatMessage\"><span style=\"font-weight:bold; color:" + this.colour + ";\">" + this.name + "</span>: " + chatMessage + "</p>";
+		chatDiv.insertAdjacentHTML('beforeend', stringToAppend);
 
 		if(document.querySelectorAll("#chat > p.chatMessage").length > 100) {
-			$("#chat p:first-child").remove();
+			chatDiv.firstChild.remove();
 		}
 		
 		if (shouldScroll) {
-			$chat.animate({scrollTop:$chat[0].scrollHeight}, 50);
+			const $chat = $("#chat");
+			$chat.stop().animate({scrollTop:$chat[0].scrollHeight}, 100);
+			//chatDiv.scrollTop = chatDiv.scrollHeight;
 		}
 	}
 	
 	attemptToSpeak() {
-		let chatDecider = Math.floor(Math.random()*49);
+		const chatDecider = Math.floor(Math.random()*49);
 		// let's chat!
 		if(chatDecider == 3) {
 			this.speak();
@@ -214,10 +212,10 @@ class Chatter {
 }
 
 // main logic
-let chatters = [];
+const chatters = [];
 let mainMemeIndex;
 let mainMemeDuration;
-let mainMemeDurationStartValue = 100;
+const mainMemeDurationStartValue = 100;
 
 function start() {
 	const queryString = window.location.search;
@@ -233,7 +231,8 @@ function start() {
 	iframe.scrolling = "0";
 	iframe.allowFullscreen = "true";
 	
-	$("#blankFrame").replaceWith(iframe);
+	const blankFrame = document.getElementById("blankFrame");
+	blankFrame.parentNode.replaceChild(iframe, blankFrame);
 	
 	for(i = 0; i < 30; i++) {
 		chatters.push(new Chatter());
@@ -244,25 +243,25 @@ function attemptToChat() {
 	if (chatters.length == 0)
 		return;
 	
-	let speakDecider = Math.floor(Math.random()*3);
+	const speakDecider = Math.floor(Math.random()*3);
 
 	if(speakDecider == 0) {
-		let chatterPicker = Math.floor(Math.random()*chatters.length);
+		const chatterPicker = Math.floor(Math.random()*chatters.length);
 
 		chatters[chatterPicker].speak();
 	}
 }
 
 function ajaxit() {
-    let iFrameWindow = document.getElementById("myframe").contentWindow;
+    const iFrameWindow = document.getElementById("myframe").contentWindow;
     iFrameWindow.document.body.appendChild(document.getElementById("form").cloneNode(true));   
-    let frameForm = iFrameWindow.document.getElementById("form");
+    const frameForm = iFrameWindow.document.getElementById("form");
     frameForm.onsubmit = null;
     frameForm.submit();
     return false;
 }
 
-$("#textfield")[0].name = new Date();
+document.getElementById("textfield").name = new Date();
 
 setInterval(() => { randomizeChatSpeed(); }, 5000);
 
@@ -278,7 +277,7 @@ function myStopFunction() {
 }
 
 function replaceEmotes(message) {
-	let words = message.split(' ');
+	const words = message.split(' ');
 	
 	for (let index in words) {
 		const emote = emotes.find(e => e.text === words[index]);
@@ -358,11 +357,11 @@ async function loadEmotes() {
 }
 
 async function fetchWords() {
-	let response = await fetch("words.txt");
-	let data = await response.text();
+	const response = await fetch("words.txt");
+	const data = await response.text();
 	
-	spam = data.split("<eos>");
-	//console.log(spam);
+	spamMessages = data.split("<eos>");
+	//console.log(spamMessages);
 }
 
 //writes the text of the input field into the chat with a random username
@@ -370,9 +369,9 @@ function chat() {
 	let colour = '#FF0000';
 	let name = 'l0m';
 	
-    let textfield = $("#textfield");
+    const textfield = document.getElementById("textfield");
     
-	let msgBody = textfield.val().trim();
+	let msgBody = textfield.value.trim();
 	
     if(msgBody!="")
     {
@@ -392,31 +391,33 @@ function chat() {
 			msgBody = replaceEmotes(msgBody);
 			
 			// append the message as a paragraph, including username and name colour
-			let stringToAppend = "<p class=\"chatMessage\"><span style=\"font-weight:bold; color:" + colour + ";\">" + name + "</span>: " + msgBody + "</p>";
-			let $chat = $('#chat');
+			const stringToAppend = "<p class=\"chatMessage\"><span style=\"font-weight:bold; color:" + colour + ";\">" + name + "</span>: " + msgBody + "</p>";
 			
-			$chat.append(stringToAppend);
-			$chat.animate({scrollTop:$chat[0].scrollHeight}, 50);
+			const chatDiv = document.getElementById("chat");
+			chatDiv.insertAdjacentHTML('beforeend', stringToAppend);
+			
+			const $chat = $('#chat');
+			$chat.animate({scrollTop:$chat[0].scrollHeight}, 100);
 		}
 		setTimeout(() => {
 			// slight delay to allow autofill to save the message
-			textfield.val("");
+			textfield.value = "";
 		}, 50);
     }
 }
 
 function donate(voicetext) {
-	let httpreq = new XMLHttpRequest();
+	const httpreq = new XMLHttpRequest();
 	voicetext = encodeURIComponent(replaceAll(voicetext, "&"," and "));
-	let params = "msg="+voicetext+"&lang=Brian&source=ttsmp3";
+	const params = "msg="+voicetext+"&lang=Brian&source=ttsmp3";
 	httpreq.open("POST", 'https://cors-anywhere.herokuapp.com/https://ttsmp3.com/makemp3_new.php', true);
 	httpreq.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 	httpreq.overrideMimeType("application/json");
 	httpreq.onreadystatechange = function (e) {
 		if (this.readyState == 4 && this.status == 200) {
-			let soundarray = JSON.parse(this.responseText);
+			const soundarray = JSON.parse(this.responseText);
 			if (soundarray["Error"] == 0) {
-				let myaudio = new Audio(soundarray["URL"]);
+				const myaudio = new Audio(soundarray["URL"]);
 				myaudio.addEventListener('canplaythrough', function () {
 					this.loop = false;
 					if (donations.length == 0) {
@@ -443,17 +444,17 @@ function donate(voicetext) {
 }
 		
 function showEmote(url) {
-	let canvas = document.getElementById("canvas");
+	const canvas = document.getElementById("canvas");
 	
-	let emote = document.createElement("img");
+	const emote = document.createElement("img");
 	emote.src = url;
 	
 	canvas.appendChild(emote);
 	
-    let left = ($("#canvas").width() - 128) * Math.random();
-    let top = ($("#canvas").height() - 128) * Math.random();
+    const left = (canvas.offsetWidth - 128) * Math.random();
+    const top = (canvas.offsetHeight - 128) * Math.random();
 	
-    let emoteStyle = emote.style;
+    const emoteStyle = emote.style;
     emoteStyle.position = "absolute";
     emoteStyle.maxHeight = "56px";
     emoteStyle.top = top + 'px';
@@ -472,17 +473,13 @@ function showCombo(word) {
 	if (!emote)
 		return;
 	
-	let canvas = document.getElementById("canvas");
-	let div = null;
-	
+	const canvas = document.getElementById("canvas");
 	if (word != combo.oldEmote) {
 		$('#comboDiv').remove();
 		combo.elt = null;
 	}	
 	
 	if (combo.elt) {
-		div = combo.elt;
-		
 		//update combo and pulse
 		if (parseInt($("#combo span").text()) < combo.count) {
 			clearTimeout(combo.timeout);
@@ -501,7 +498,7 @@ function showCombo(word) {
 	} else {
 		combo.oldEmote = emote.text;
 		
-		div = document.createElement("div");
+		const div = document.createElement("div");
 		div.setAttribute("id", "comboDiv");
 		
 		combo.elt = div;
@@ -511,8 +508,8 @@ function showCombo(word) {
 		$('#comboDiv').hide();
 		$('#comboDiv').fadeIn(1000);
 		
-		let stringToAppend = `<p id='combo' class='chatMessage'>COMBO x<span>${combo.count}</span><img src='${emote.url}' class='emote'></img></p>`;
-		$('#comboDiv').append(stringToAppend);
+		const stringToAppend = `<p id='combo' class='chatMessage'>COMBO x<span>${combo.count}</span><img src='${emote.url}' class='emote'></img></p>`;
+		document.getElementById("comboDiv").innerHTML = stringToAppend;
 	}
 	
 	if (!combo.timeout) {
@@ -526,7 +523,7 @@ function randomInteger(n) {
 	if (n < 3)
 		return 0;
 	
-	let x = Math.ceil(Math.random() * 100);
+	const x = Math.ceil(Math.random() * 100);
 	
 	if (x > 40)
 		return 0;
@@ -537,13 +534,9 @@ function randomInteger(n) {
 	else return Math.min(n, 2 + Math.ceil(Math.random() * (n - 2)));
 }
 
-function escapeRegExp(str) {
-	return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-}
+escapeRegExp = (str) => str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
 
-function replaceAll(str, find, replace) {
-	return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
-}
+replaceAll = (str, find, replace) => str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
 
 window.onerror = (msg, url, line) => {
     if (msg == "[IFRAME ERROR MESSAGE]") {
