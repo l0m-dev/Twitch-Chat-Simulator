@@ -23,18 +23,16 @@ const donations = [];
 //let colours = new Array("Red", "Blue", "Green", "Yellow", "Orange", "Brown", "Black", "White", "Fuchsia");
 let colours = ["FF0000", "0000FF", "008000", "B22222", "FF7F50", "FF4500", "2E8B57", "DAA520", "D2691E", "5F9EA0", "1E90FF", "FF69B4", "8A2BE2", "00FF7F"];
 
+let username = (localStorage["username"] && localStorage["username"] != "") ? localStorage["username"] : "PepegaHunter2";
+
 // main logic
 const chatters = [];
 let mainMemeIndex;
 let mainMemeDuration;
 const mainMemeDurationStartValue = 100;
+let streamer = new URLSearchParams(window.location.search).get('streamer') || 'xQcOW';
 
 function start() {
-	const queryString = window.location.search;
-	const urlParams = new URLSearchParams(queryString);
-
-	const streamer = urlParams.get('streamer') || 'xqcow';
-
 	const iframe = document.createElement('iframe');
 	iframe.setAttribute("id", "frame");
 
@@ -161,7 +159,6 @@ async function fetchWords() {
 
 function chat() {
 	let colour = '#FF0000';
-	let name = 'l0m';
 
 	const textfield = document.getElementById("textfield");
 
@@ -183,7 +180,7 @@ function chat() {
 			msgBody = replaceEmotes(msgBody);
 
 			// append the message as a paragraph, including username and name colour
-			const stringToAppend = `<div class="chatMessage"><span style="font-weight: bold; color: ${colour};">${name}</span><span>: </span><span class="chatMessageText">${msgBody}</span></div>`;
+			const stringToAppend = `<div class="chatMessage"><span style="font-weight: bold; color: ${colour};">${username}</span><span>: </span><span class="chatMessageText">${msgBody}</span></div>`;
 
 			const chatDiv = document.getElementById("chat");
 			chatDiv.insertAdjacentHTML('beforeend', stringToAppend);
@@ -197,6 +194,38 @@ function chat() {
 			textfield.value = "";
 		}, 50);
 	}
+}
+
+function scrollToBottom() {
+	const chatDiv = document.getElementById("chat");
+	chatDiv.scrollTop = chatDiv.scrollHeight;
+}
+
+function openSettings() {
+	//https://codepen.io/fogrew/pen/yVpmzY
+	
+	document.getElementById("streamer").value = streamer;
+	document.getElementById("username").value = username;
+	
+	document.getElementsByClassName("settings_wrapper")[0].style.display = "block";
+}
+
+function closeSettings(e) {
+	if (e.currentTarget != e.target)
+		return;
+	
+	const myUsername = document.getElementById("username").value.trim();
+	if (username != "") {
+		username = myUsername;
+		localStorage["username"] = username;
+	}
+	
+	const streamerUsername = document.getElementById("streamer").value.trim();
+	if (streamerUsername != "" && streamer != streamerUsername) {
+		window.location.href = window.location.href.split('?')[0] + '?streamer=' + streamerUsername;
+	}
+	
+	e.currentTarget.style.display = "none";
 }
 
 window.onerror = (msg, url, line) => {

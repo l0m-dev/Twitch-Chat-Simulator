@@ -1,3 +1,10 @@
+html {
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
+	-webkit-appearance: none;
+	-webkit-text-size-adjust: 100%;
+}
+
 body {
 	margin: 0px;
 	display: flex;
@@ -67,7 +74,7 @@ button {
 	width: 100%;
 	box-shadow: inset 0 -1px 0 0 #2c3032;
 	background-color: #212325;
-	z-index: 999;
+	z-index: 2;
 }
 
 #chatInput {
@@ -82,7 +89,7 @@ button {
 	font-size: 14px;
 	width: 100%;
 	background-color: #212325;
-	z-index: 999;
+	z-index: 2;
 }
 
 #chatHeader p {
@@ -113,28 +120,41 @@ svg.headerIcon {
 }
 
 .chatMessage {
-	padding: .5rem 0rem;
 	display: block;
+	line-height: 36px;
+	position: relative;
 }
 
-.chatMessageText {
-	line-height: 2rem;
-	min-height: 28px;
-	overflow-y: none;
+.chatMessage:last-child { 
+	margin-bottom: 10px; 
 }
 
 .emote_holder {
 	position: relative;
+	vertical-align: middle;
 	display: inline-block;
+	max-height: 28px;
 	min-width: 28px;
-	max-height: 30px;
 }
 
 .emote {
-	margin: -.7rem 0px;
-	position: relative;
-	vertical-align: middle;
 	max-height: 28px;
+	width: auto;
+}
+
+#autoscroll {
+    position: absolute;
+	transition: opacity 0.5s ease-out;
+    opacity: 0;
+    margin-top: -37px;
+    margin-left: 25px;
+    background-color: #353535;
+    width: calc(100% - 50px);
+    cursor: default;
+}
+
+#autoscroll:hover {
+	background-color: #353535ab;
 }
 
 a {
@@ -155,6 +175,17 @@ a:hover {
 	border-width: 1px;
 	border-color: gray;
 	padding: 0px 10px;
+}
+
+#settingsButton {
+	position: absolute;
+	height: 30%;
+	width: 15%;
+	left: 2.5%;
+	top: 67.5%;
+	background-color: #6441a4;
+	color: white;
+	border: none;
 }
 
 #chatButton {
@@ -186,6 +217,91 @@ a:hover {
 	margin-left: 5px;
 }
 
+.settings_wrapper {
+	display: none;
+	position: fixed;
+	top: 0%;
+	left: 0%;
+	width: 100%;
+	height: 100%;
+	z-index: 2;
+	background-color: #000000b3;
+}
+
+.settings {
+	position: relative;
+	width: 300px;
+	margin: 100px auto;
+	background-color: #181a1b;
+	border-radius: 2px;
+	box-shadow: 0 10px 10px -6px rgba(2, 21, 38, 0.3);
+}
+
+.settings__input {
+	width: 100%;
+	padding: 0 1px;
+	border: 1px solid #b7c3cf;
+	height: 40px;
+	line-height: 40px;
+	font-size: 15px;
+	border-radius: 2px;
+	background-color: rgb(24, 26, 27);
+    color: rgb(167, 160, 148);
+	outline: none;
+}
+
+.settings__input:focus {
+	background-color: rgb(24, 26, 27);
+	border-color: #0fb9ed;
+	box-shadow: 0 0 2px #00b2e8;
+}
+
+.settings__header {
+	height: 50px;
+	background-color: #700070;
+	border-radius: 2px 2px 0 0;
+	text-align: center;
+	line-height: 50px;
+	font-size: 22pt;
+}
+
+.settings__item {
+	border-top: 1px solid rgba(65, 70, 73, 0.5);
+	padding: 12px 27px 17px 23px;
+}
+
+.settings__item:first-child {
+	border-top: 0;
+}
+
+.settings__item--link {
+	display: block;
+	padding-top: 15px;
+	cursor: pointer;
+	color: #8097b1;
+	text-decoration: none;
+	outline: none;
+}
+
+.settings__item--link:before {
+	content: '';
+	display: inline-block;
+	width: 12px;
+	height: 13px;
+	margin-right: 10px;
+	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='13' fill='%238097B1'%3E%3Cpath d='M9 9.5l3-3-3-3-1 1 1.3 1.3H4v1.5h5.3L8 8.5'/%3E%3Cpath d='M0 0h8v1.5H1.5v10H8V13H0'/%3E%3C/svg%3E%0A");
+}
+
+.settings__item--link:focus {
+	background-color: #700070;
+	color: #1d1f24;
+}
+
+.settings__label {
+	display: block;
+	color: #fff;
+	padding: 5px 0 10px;
+}
 
 /* Change Autocomplete styles in Chrome*/
 

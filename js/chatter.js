@@ -168,10 +168,10 @@ class Chatter {
 		const shouldScroll = chatDiv.scrollHeight <= chatDiv.scrollTop + chatDiv.clientHeight;
 
 		// append the message as a paragraph, including username and name colour
-		const stringToAppend = `<div class="chatMessage"><span style="font-weight: bold; color: ${this.colour};">${this.name}</span><span>: </span><span class="chatMessageText">${chatMessage}</span></div>`;
+		const stringToAppend = `<div class="chatMessage"><span style="font-weight: bold; color: ${this.colour};">${this.name}</span><span>: </span>${chatMessage}</div></div>`;
 		chatDiv.insertAdjacentHTML('beforeend', stringToAppend);
-
-		if (document.querySelectorAll("#chat > div.chatMessage").length > 100) {
+		
+		while ((document.querySelectorAll("#chat > div.chatMessage").length > 40 && shouldScroll) || document.querySelectorAll("#chat > div.chatMessage").length > 200) {
 			chatDiv.firstChild.remove();
 		}
 
@@ -180,6 +180,8 @@ class Chatter {
 			//$chat.stop().animate({scrollTop:chatDiv.scrollHeight}, 100);
 			chatDiv.scrollTop = chatDiv.scrollHeight;
 		}
+		
+		document.getElementById("autoscroll").style.opacity = shouldScroll ? "0" : "1";
 	}
 }
 

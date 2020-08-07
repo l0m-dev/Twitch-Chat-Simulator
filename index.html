@@ -24,8 +24,10 @@
 				</div>
 			</div>
 			<div id="chatInput">
+				<p id="autoscroll" onclick="scrollToBottom()">Resume auto scroll</p>
 				<form id="form" onsubmit="return ajaxit();" autocomplete="on">
 					<input type="text" id="textfield" placeholder=" Send a message" maxlength="500">
+					<input type="button" id="settingsButton" onClick="openSettings()" value="Settings">
 					<input type="submit" id="chatButton" onClick="chat()" value="Chat">
 				</form>
 				<iframe id="myframe" src="" style="visibility:hidden"></iframe> <!-- you'll want this hidden -->
@@ -34,6 +36,22 @@
 		<audio id="audio" controls="" style="display:none">
 			<source id="source" type="audio/wav" />
 		</audio>
+		<div class="settings_wrapper" onclick="closeSettings(event)">
+			<div class="settings">
+				<header class="settings__header">Settings</header>
+				<form name="settings">
+					<div class="settings__item">
+						<label class="settings__label label" for="streamer">Streamer</label>
+						<input class="settings__input input" id="streamer" name="streamer" placeholder="" type="text" value="" />
+					</div>
+					<div class="settings__item">
+						<label class="settings__label label" for="username">Your username</label>
+						<input class="settings__input input" id="username" name="username" placeholder="" type="text" value="" />
+					</div>
+					<a class="settings__item settings__item--link" href="#">Logout</a>
+				</form>
+			</div>
+		</div>
 		<script src="js/functions.js"></script>
 		<script src="js/chatter.js"></script>
 		<script src="js/chat_features.js"></script>
