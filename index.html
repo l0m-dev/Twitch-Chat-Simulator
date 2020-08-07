@@ -23,11 +23,11 @@
 					<p id="welcome">Twitch Chat Simulator</p>
 				</div>
 			</div>
-			<div id="chatInput">
+			<div id="chatFooter">
 				<p id="autoscroll" onclick="scrollToBottom()">Resume auto scroll</p>
-				<form id="form" onsubmit="return ajaxit();" autocomplete="on">
+				<form id="chatFooterForm" onsubmit="return ajaxit();" autocomplete="on">
 					<input type="text" id="textfield" placeholder=" Send a message" maxlength="500">
-					<input type="button" id="settingsButton" onClick="openSettings()" value="Settings">
+					<img id="settingsButton" onClick="openSettings()"></img>
 					<input type="submit" id="chatButton" onClick="chat()" value="Chat">
 				</form>
 				<iframe id="myframe" src="" style="visibility:hidden"></iframe> <!-- you'll want this hidden -->

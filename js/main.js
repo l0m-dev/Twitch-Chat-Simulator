@@ -65,8 +65,8 @@ function attemptToChat() {
 
 function ajaxit() {
 	const iFrameWindow = document.getElementById("myframe").contentWindow;
-	iFrameWindow.document.body.appendChild(document.getElementById("form").cloneNode(true));
-	const frameForm = iFrameWindow.document.getElementById("form");
+	iFrameWindow.document.body.appendChild(document.getElementById("chatFooterForm").cloneNode(true));
+	const frameForm = iFrameWindow.document.getElementById("chatFooterForm");
 	frameForm.onsubmit = null;
 	frameForm.submit();
 	return false;

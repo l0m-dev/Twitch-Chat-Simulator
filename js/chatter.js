@@ -165,10 +165,12 @@ class Chatter {
 		chatMessage = replaceEmotes(chatMessage);
 
 		const chatDiv = document.getElementById("chat");
-		const shouldScroll = chatDiv.scrollHeight <= chatDiv.scrollTop + chatDiv.clientHeight;
+		const height = chatDiv.lastChild.clientHeight || 0;
+
+		const shouldScroll = chatDiv.scrollHeight <= chatDiv.scrollTop + chatDiv.clientHeight + height;
 
 		// append the message as a paragraph, including username and name colour
-		const stringToAppend = `<div class="chatMessage"><span style="font-weight: bold; color: ${this.colour};">${this.name}</span><span>: </span>${chatMessage}</div></div>`;
+		const stringToAppend = `<div class="chatMessage"><span style="font-weight: bold; color: ${this.colour};">${this.name}</span><span>: </span>${chatMessage}</div>`;
 		chatDiv.insertAdjacentHTML('beforeend', stringToAppend);
 		
 		while ((document.querySelectorAll("#chat > div.chatMessage").length > 40 && shouldScroll) || document.querySelectorAll("#chat > div.chatMessage").length > 200) {
@@ -178,6 +180,7 @@ class Chatter {
 		if (shouldScroll) {
 			//const $chat = $("#chat");
 			//$chat.stop().animate({scrollTop:chatDiv.scrollHeight}, 100);
+
 			chatDiv.scrollTop = chatDiv.scrollHeight;
 		}
 		
