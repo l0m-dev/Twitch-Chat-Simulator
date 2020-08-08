@@ -127,7 +127,7 @@ svg.headerIcon {
 
 .chatMessage {
 	display: block;
-	line-height: 36px;
+	line-height: 30px;
 	position: relative;
 }
 
@@ -139,13 +139,11 @@ svg.headerIcon {
 	position: relative;
 	vertical-align: middle;
 	display: inline-block;
-	max-height: 28px;
-	min-width: 28px;
+	height: 32px;
 }
 
 .emote {
 	max-height: 28px;
-	width: auto;
 }
 
 #autoscroll {

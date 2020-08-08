@@ -165,14 +165,14 @@ class Chatter {
 		chatMessage = replaceEmotes(chatMessage);
 
 		const chatDiv = document.getElementById("chat");
-		const height = chatDiv.lastChild.clientHeight || 0;
+		//const height = chatDiv.lastChild.clientHeight || 0;
 
-		const shouldScroll = chatDiv.scrollHeight <= chatDiv.scrollTop + chatDiv.clientHeight + height;
+		shouldScroll = chatDiv.scrollHeight <= chatDiv.scrollTop + chatDiv.clientHeight + 16;
 
 		// append the message as a paragraph, including username and name colour
 		const stringToAppend = `<div class="chatMessage"><span style="font-weight: bold; color: ${this.colour};">${this.name}</span><span>: </span>${chatMessage}</div>`;
 		chatDiv.insertAdjacentHTML('beforeend', stringToAppend);
-		
+
 		while ((document.querySelectorAll("#chat > div.chatMessage").length > 40 && shouldScroll) || document.querySelectorAll("#chat > div.chatMessage").length > 200) {
 			chatDiv.firstChild.remove();
 		}
@@ -183,8 +183,9 @@ class Chatter {
 
 			chatDiv.scrollTop = chatDiv.scrollHeight;
 		}
-		
+
 		document.getElementById("autoscroll").style.opacity = shouldScroll ? "0" : "1";
+		document.getElementById("autoscroll").style.pointerEvents = shouldScroll ? "none" : "all";
 	}
 }
 

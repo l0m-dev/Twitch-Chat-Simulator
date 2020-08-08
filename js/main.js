@@ -30,6 +30,7 @@ const chatters = [];
 let mainMemeIndex;
 let mainMemeDuration;
 const mainMemeDurationStartValue = 100;
+let shouldScroll = true;
 let streamer = new URLSearchParams(window.location.search).get('streamer') || 'xQcOW';
 
 function start() {
@@ -78,7 +79,7 @@ function replaceEmotes(message) {
 	for (let index in words) {
 		const emote = findEmote(words[index]);
 		if (emote) {
-			words[index] = `<div class="emote_holder"><img src='${emote.url}' alt='${emote.text}' class='emote'></img></div>`;
+			words[index] = `<div class="emote_holder"><img src='${emote.url}' alt='${emote.text}' onload='scrollToBottomOnLoad(this)' class='emote'></img></div>`;
 		}
 	};
 
@@ -142,7 +143,7 @@ async function loadEmotes() {
 			Object.keys(data.sets).forEach(setID => {
 				const ffzEmotes = data.sets[setID].emoticons.map(emote => ({
 					text: emote.name,
-					url: (emote.urls['4'] || emote.urls['2'] || emote.urls['1']).replace(/^\/\//, 'https://')
+					url: emote.urls['1'].replace(/^\/\//, 'https://')
 				}));
 				emotes.push(...ffzEmotes);
 			});
@@ -199,6 +200,16 @@ function chat() {
 function scrollToBottom() {
 	const chatDiv = document.getElementById("chat");
 	chatDiv.scrollTop = chatDiv.scrollHeight;
+}
+
+function scrollToBottomOnLoad(elt) {
+	const chatDiv = document.getElementById("chat");
+	const height = elt.parentNode.parentNode.clientHeight;
+	let scroll = chatDiv.scrollHeight <= chatDiv.scrollTop + chatDiv.clientHeight + height;
+
+	if (scroll) {
+		chatDiv.scrollTop = chatDiv.scrollHeight;
+	}
 }
 
 function openSettings() {
