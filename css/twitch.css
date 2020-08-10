@@ -118,11 +118,13 @@ svg.headerIcon {
 
 #chat {
 	width: 330px;
-	height: calc(100% - 50px);
+	height: calc(100% - 60px);
 	padding: 10px;
 	background-color: #212325;
 	overflow-y: auto;
 	position: relative;
+	display: flex;
+	flex-direction: column-reverse;
 }
 
 .chatMessage {
@@ -131,19 +133,19 @@ svg.headerIcon {
 	position: relative;
 }
 
-.chatMessage:last-child { 
-	margin-bottom: 10px; 
+.chatMessage:first-child { 
+	margin-bottom: auto;
 }
 
 .emote_holder {
 	position: relative;
 	vertical-align: middle;
 	display: inline-block;
-	height: 32px;
+	max-height: 32px;
 }
 
 .emote {
-	max-height: 28px;
+	display: block;
 }
 
 #autoscroll {
@@ -203,16 +205,16 @@ a:hover {
 	left: 0;
 	bottom: 0;
 	height: 48px;
-	margin-left: 10px;
 }
 
 #combo {
 	color: white;
 	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 	-webkit-font-smoothing: antialiased;
+	display: inline-block;
 }
 
-#combo .emote {
+#comboDiv .emote {
 	margin-left: 5px;
 }
 

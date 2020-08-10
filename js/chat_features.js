@@ -99,7 +99,7 @@ function showCombo(emote) {
 		$('#comboDiv').hide();
 		$('#comboDiv').fadeIn(1000);
 
-		const stringToAppend = `<p id='combo' class='chatMessage'>COMBO x<span>${combo.count}</span><img src='${emote.url}' class='emote'></img></p>`;
+		const stringToAppend = `<p id='combo'>COMBO x<span>${combo.count}</span></p><div style="width:100px" class="emote_holder"><img src='${emote.url}' class='emote'></div>`;
 		document.getElementById("comboDiv").innerHTML = stringToAppend;
 	}
 

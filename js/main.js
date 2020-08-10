@@ -13,9 +13,11 @@ const donations = [];
 
 (async function () {
 	document.getElementById("textfield").name = new Date();
+	document.getElementById("chat").insertAdjacentHTML('afterbegin', "<div class='chatMessage'>Twitch Chat Simulator</div>");
 
 	await loadEmotes();
 	await fetchWords();
+	//emotes.forEach(e => {new Image().src = e.url});
 
 	start();
 })();
@@ -79,7 +81,7 @@ function replaceEmotes(message) {
 	for (let index in words) {
 		const emote = findEmote(words[index]);
 		if (emote) {
-			words[index] = `<div class="emote_holder"><img src='${emote.url}' alt='${emote.text}' onload='scrollToBottomOnLoad(this)' class='emote'></img></div>`;
+			words[index] = `<div class="emote_holder"><img src='${emote.url}' alt='${emote.text}' class='emote'></img></div>`;
 		}
 	};
 
@@ -87,7 +89,7 @@ function replaceEmotes(message) {
 }
 
 async function loadEmotes() {
-	const handleTwitchEmotes = async response => {
+	async function handleTwitchEmotes(response) {
 		const data = await response.json();
 
 		const twitchEmotes = data.emotes.map(emote => ({
@@ -97,7 +99,7 @@ async function loadEmotes() {
 		emotes.push(...twitchEmotes);
 	}
 
-	const handleBTTVEmotes = async response => {
+	async function handleBTTVEmotes(response) {
 		const data = await response.json();
 
 		if (data.channelEmotes) {
@@ -116,39 +118,32 @@ async function loadEmotes() {
 		}
 	}
 
+	async function handleFFZEmotes(response) {
+		const data = await response.json();
+
+		Object.keys(data.sets).forEach(setID => {
+			const ffzEmotes = data.sets[setID].emoticons.map(emote => ({
+				text: emote.name,
+				url: emote.urls['1'].replace(/^\/\//, 'https://')
+			}));
+			emotes.push(...ffzEmotes);
+		});
+	}
+
 	// Fetches global twitch emotes
-	fetch('https://api.twitchemotes.com/api/v4/channels/0')
-		.then(handleTwitchEmotes)
-		.catch(console.error)
+	handleTwitchEmotes(await fetch('https://api.twitchemotes.com/api/v4/channels/0'));
 
 	// Fetches channel specific twitch emotes
-	fetch('https://api.twitchemotes.com/api/v4/channels/71092938')
-		.then(handleTwitchEmotes)
-		.catch(console.error)
+	handleTwitchEmotes(await fetch('https://api.twitchemotes.com/api/v4/channels/71092938'));
 
 	// Fetches global bttv emotes
-	fetch(`https://api.betterttv.net/3/cached/emotes/global`)
-		.then(handleBTTVEmotes)
-		.catch(console.error)
+	handleBTTVEmotes(await fetch(`https://api.betterttv.net/3/cached/emotes/global`));
 
 	// Fetches channel specific bttv emotes
-	fetch(`https://api.betterttv.net/3/cached/users/twitch/71092938`)
-		.then(handleBTTVEmotes)
-		.catch(console.error)
+	handleBTTVEmotes(await fetch(`https://api.betterttv.net/3/cached/users/twitch/71092938`));
 
 	// Fetches channel specific ffz emotes
-	fetch(`https://api.frankerfacez.com/v1/room/xqcow`)
-		.then(async response => {
-			const data = await response.json();
-			Object.keys(data.sets).forEach(setID => {
-				const ffzEmotes = data.sets[setID].emoticons.map(emote => ({
-					text: emote.name,
-					url: emote.urls['1'].replace(/^\/\//, 'https://')
-				}));
-				emotes.push(...ffzEmotes);
-			});
-		})
-		.catch(console.error)
+	handleFFZEmotes(await fetch(`https://api.frankerfacez.com/v1/room/xqcow`));
 }
 
 async function fetchWords() {
@@ -181,10 +176,10 @@ function chat() {
 			msgBody = replaceEmotes(msgBody);
 
 			// append the message as a paragraph, including username and name colour
-			const stringToAppend = `<div class="chatMessage"><span style="font-weight: bold; color: ${colour};">${username}</span><span>: </span><span class="chatMessageText">${msgBody}</span></div>`;
+			const stringToPrepend = `<div class="chatMessage"><span style="font-weight: bold; color: ${colour};">${username}</span><span>: </span>${msgBody}</div>`;
 
 			const chatDiv = document.getElementById("chat");
-			chatDiv.insertAdjacentHTML('beforeend', stringToAppend);
+			chatDiv.insertAdjacentHTML('afterbegin', stringToPrepend);
 
 			//const $chat = $('#chat');
 			//$chat.animate({scrollTop:chatDiv.scrollHeight}, 100);
@@ -200,16 +195,6 @@ function chat() {
 function scrollToBottom() {
 	const chatDiv = document.getElementById("chat");
 	chatDiv.scrollTop = chatDiv.scrollHeight;
-}
-
-function scrollToBottomOnLoad(elt) {
-	const chatDiv = document.getElementById("chat");
-	const height = elt.parentNode.parentNode.clientHeight;
-	let scroll = chatDiv.scrollHeight <= chatDiv.scrollTop + chatDiv.clientHeight + height;
-
-	if (scroll) {
-		chatDiv.scrollTop = chatDiv.scrollHeight;
-	}
 }
 
 function openSettings() {
